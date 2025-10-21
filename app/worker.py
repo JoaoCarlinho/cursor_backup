@@ -3,5 +3,5 @@
 # to make it discoverable by the RQ worker. In a real application,
 # you might have a dedicated 'tasks.py' file.
 from tasks import (
-    get_response
+    generate_response
     )
