@@ -20,7 +20,7 @@ services:
     ports:
       - 11434:11434
     volumes:
-      - ollama_embedding_storage:/root/.ollama
+      - ollama_prompt_storage:/root/.ollama
       - ../inference_models/Modelfile:/root/Modelfile
     restart: "no" # Prevent automatic restart
     # devices:
