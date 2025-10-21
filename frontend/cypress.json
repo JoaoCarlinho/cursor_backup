@@ -1,0 +1,5 @@
+{
+    "integrationFolder": "tests",
+    "specPattern": "**/*.{js,tsx}",
+    "configFile": "cypress.config.js"
+}

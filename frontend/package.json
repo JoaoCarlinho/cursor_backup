@@ -1,0 +1,51 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@cypress/webpack-dev-server": "^5.1.1",
+    "@cypress/webpack-preprocessor": "^7.0.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.0.1",
+    "@types/cypress": "^1.1.6",
+    "@types/node": "^24.3.1",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "axios": "^1.8.4",
+    "cypress": "^15.2.0",
+    "kea": "^3.1.6",
+    "kea-thunk": "^1.0.0",
+    "kea-typegen": "^3.3.6",
+    "konva": "^10.0.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.1.1",
+    "react-konva": "^19.0.10",
+    "react-router-dom": "^7.5.0",
+    "react-router-hash-link": "^2.4.3",
+    "socket.io-client": "^4.8.1",
+    "yarn": "^1.22.22"
+  },
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@mui/icons-material": "^7.0.1",
+    "@types/react-router-hash-link": "^2.4.9",
+    "css-loader": "^7.1.2",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.2",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  }
+}

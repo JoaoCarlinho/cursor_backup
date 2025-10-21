@@ -1,0 +1,9 @@
+    FROM python:3.10
+    RUN apt-get update && apt-get install -y ffmpeg
+    WORKDIR /app
+    ENV PYTHONPATH="/app"
+    COPY rq_requirements.txt rq_requirements.txt
+    RUN pip install -r rq_requirements.txt
+    COPY . .
+
+    # RUN apk add --no-cache ffmpeg

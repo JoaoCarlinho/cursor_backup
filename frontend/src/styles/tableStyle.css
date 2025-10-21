@@ -1,0 +1,39 @@
+.firstColumn {
+    width: 50px;
+}
+
+#list {
+
+    width: 50px;
+}
+
+@media (max-width: 992px) {
+  .firstColumn {
+    width: 20%; /* Adjusted width for small screens */
+  }
+}
+
+.table-head {
+  /* remove any unwanted margins */
+  margin: 0;
+  padding: 0;
+
+  &.material-table-material-wide-columns {
+    /* add these styles */
+    max-width: 500px; /* adjust this value based on your need */
+    width: calc(100% - 20px); /* subtract 20px from the parent's width */
+    min-width: 400px;
+  }
+}
+
+.table-body {
+  /* remove any unwanted margins */
+  margin: 0;
+  padding: 0;
+
+  &.material-table-material-wide-columns {
+    /* add these styles */
+    max-width: 500px; /* adjust this value based on your need */
+    width: calc(100% - 20px); /* subtract 20px from the parent's width */
+  }
+}
