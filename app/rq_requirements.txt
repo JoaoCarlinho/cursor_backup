@@ -1,0 +1,24 @@
+ffmpeg-python
+flask-cors==5.0.1
+flasgger==0.9.7.1
+flask-marshmallow==1.3.0
+flask_migrate
+Flask-SocketIO==5.5.1
+Flask-SQLAlchemy==3.1.1
+langchain
+langchain_community
+langchain_elasticsearch
+# langchain-openai
+openai
+marshmallow-sqlalchemy
+minio==7.2.15
+redis
+roboflow
+rq
+psycopg2-binary
+python-dotenv
+SQLAlchemy==2.0.39
+SQLAlchemy-Utils==0.41.2
+tiktoken
+Werkzeug==3.1.3
+yfinance

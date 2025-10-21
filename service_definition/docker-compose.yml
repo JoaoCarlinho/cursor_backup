@@ -1,0 +1,146 @@
+# version: '3.9'
+services:
+  backend:
+    platform: linux/amd64
+    build:
+      context: ../app
+    ports:
+      - '5005:5005'
+    restart: always
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - elastic
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama_embedding_storage:/root/.ollama
+      - ../inference_models/Modelfile:/root/Modelfile
+    restart: "no" # Prevent automatic restart
+    # devices:
+    #   - driver: nvidia
+    #     capabilities: [gpu]
+    #     count: all
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+    networks:
+      - elastic
+
+  # twollama:
+  #   image: ollama/ollama:latest
+  #   ports:
+  #     - 11435:11434
+  #   volumes:
+  #     - ollama_prompt_storage:/root/.ollama
+  #   restart: "no" # Prevent automatic restart
+  #   # devices:
+  #   #   - driver: nvidia
+  #   #     capabilities: [gpu]
+  #   #     count: all
+  #   environment:
+  #     OLLAMA_HOST: 0.0.0.0:11435
+  #   networks:
+  #     - elastic
+
+  db:
+    container_name: postgres
+    image: postgres:15.1-bullseye
+    hostname: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=flasktodos
+    volumes:
+      - ../data/database:/var/lib/postgresql/data
+      - ../app/alembic:/app/alembic
+    restart: always
+    networks:
+      - elastic
+
+  minio:
+    image: minio/minio
+    command: server --console-address ":9001" /data
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    networks:
+      - elastic
+    volumes:
+      - '../data/lake/backend_persistent_storage:/data'
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_DEFAULT_BUCKETS=cloud-object-storage
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - elastic
+
+  rqworker:
+    build: 
+      context: ../app
+      dockerfile: RQWorkerDockerfile
+    deploy:
+      mode: replicated
+      replicas: 3
+    command: rq worker --url redis://redis:6379 tasks
+    depends_on:
+      - redis
+    networks:
+      - elastic
+    volumes:
+      - ../raw-data/metadata:/raw-data/metadata
+      - ../data/lake/backend_persistent_storage/palm_videos/process:/api_data/palm_videos/process
+      - ../data/lake/backend_persistent_storage/split:/api_data/split
+      - ../data/lake/backend_persistent_storage/sf_split:/api_data/sf_split
+    mem_limit: ${MEM_LIMIT}
+  
+  rqdashboard:
+    image: eoranged/rq-dashboard
+    platform: linux/amd64
+    ports:
+      - "9181:9181"
+    environment:
+      - RQ_DASHBOARD_REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - elastic
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./etc/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      # - frontend
+      - backend
+    networks:
+      - elastic
+
+volumes:
+  certs:
+    driver: local
+  data: {}
+  ollama_prompt_storage:
+    driver: local
+
+
+networks:
+  elastic:
+    driver: bridge
