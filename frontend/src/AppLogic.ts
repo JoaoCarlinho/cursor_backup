@@ -198,7 +198,8 @@
           null,
           {
             uploadFile: () => "requested",
-            uploadFileSuccess: () => "uploaded",
+            // set to 'complete' on successful upload to match UI expectations
+            uploadFileSuccess: () => "complete",
             uploadFileFailure: () => "failed",
             setUploadFileStatus: (_, { uploadFileStatus }) => uploadFileStatus,
           }
