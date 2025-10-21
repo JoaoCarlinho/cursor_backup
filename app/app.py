@@ -1,22 +1,17 @@
-import yfinance as yf
 from flask import jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO
-import requests
-from requests.auth import HTTPBasicAuth
 from marshmallow import ValidationError
 
 from werkzeug.exceptions import HTTPException
 from src.app_factory import create_app
-from app.src.interfaces.es_index import ESIndex
 from src.interfaces.task_response import TaskResponse
-from src.models.task_model import File, Index, IndexTask, PromptTask, db
+from src.models.task_model import File, PromptTask, db
 from minio import Minio
 from minio.error import S3Error
 from rq import Queue
 from redis import Redis
 from datetime import datetime
-import uuid
 import os
 import io
 import json
