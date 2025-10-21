@@ -57,7 +57,11 @@ def fetch_file_content(key):
 
 
 def generate_response(
-    prompt: QueryPrompt
+    prompt_text,
+    prompt_model,
+    instructions,
+    additional_context="-",
+    files=None
 ):
     """
     Generate a response using either the OpenAI API
@@ -67,7 +71,7 @@ def generate_response(
         response = ''
         # fetch contents
         file_texts = []
-        for f in prompt.files:
+        for f in files:
             key = f.get("key")
             filename = f.get("filename")
             content = fetch_file_content(key)
@@ -83,19 +87,19 @@ def generate_response(
             context_parts.append(f"--- BEGIN FILE: {ft['filename']} ({ft['key']}) ---\n{ft['content']}\n--- END FILE ---\n")
         context_str = "\n".join(context_parts)
 
-        match prompt.get_prompt_model():
+        match prompt_model:
             case 'o4-mini-2025-04-16':
                 client = OpenAI(api_key=OPENAI_KEY)
                 gen_resp = client.chat.completions.create(
-                    model=prompt.get_prompt_model(),
+                    model=prompt_model,
                     messages=[
                         {
                             "role": "system",
-                            "content": prompt.get_instructions()
+                            "content": instructions
                         },
                         {
                             "role": "user",
-                            "content": f'Context: {prompt.get_additional_context() + context_str}\n\nQuestion: {prompt.get_prompt_text()}'
+                            "content": f'Context: {additional_context + context_str}\n\nQuestion: {prompt_text}'
                         },
                     ],
                     # max_tokens=100,  # Limit the response length
@@ -104,11 +108,11 @@ def generate_response(
                 print(f'Response : {gen_resp.choices[0].message.content}')
                 response = gen_resp.choices[0].message.content
             case 'llama3.2:1b' | 'llama3:latest':
-                full_prompt = f"{prompt.get_instructions()}\n{prompt.get_additional_context() + context_str}\n{prompt.get_prompt_text()}"
+                full_prompt = f"{instructions}\n{additional_context + context_str}\n{prompt_text}"
                 # Run the prompt through the Ollama model using subprocess
                 ollama_url = 'http://host.docker.internal:11434/api/generate'
                 payload = {
-                    "model": prompt.get_prompt_model(),
+                    "model": prompt_model,
                     "prompt": full_prompt,
                     "stream": False  # Set to True for streaming responses
                 }
@@ -120,7 +124,7 @@ def generate_response(
                 response = gen_resp.json()['response']
             case _:  # Default case (wildcard)
                 raise ValueError(
-                    f"Unsupported prompt model: {prompt.get_prompt_model()}. "
+                    f"Unsupported prompt model: {prompt_model}. "
                     "Supported models are: o4-mini-2025-04-16, llama3.2:1b"
                 )
         socketio.emit(
