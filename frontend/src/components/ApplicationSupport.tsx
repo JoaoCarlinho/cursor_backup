@@ -98,7 +98,7 @@ function ApplicationSupport () {
   }, [promptWithContextJobStatus, getPromptWithContextResponseFromPostGres]);
 
   const handleUpload = () => {
-    if (uploadFileStatus !== null && uploadFileStatus !== 'failed' && uploadFileStatus !== 'complete') {
+    if (uploadFileStatus !== null && uploadFileStatus !== 'failed' && uploadFileStatus !== 'uploaded') {
       console.log('File upload is already running, please wait for it to complete.');
       alert(`File upload running, please wait for completion.${uploadFileStatus}`);
       console.log(`Prompt: ${fileName}`);
@@ -110,7 +110,6 @@ function ApplicationSupport () {
       console.log(`Uploading file: ${fileName}`);
       // After successful upload, you might want to clear the file:
       clearFile();
-      setUploadFileStatus('complete');
     } else {
       console.log('No file to upload.');
     }
@@ -229,7 +228,7 @@ function ApplicationSupport () {
             {selectedFile && (
               <div>
                 <Typography>Selected File: {selectedFile.name}</Typography>
-                <Button disabled={uploadFileStatus !== null && uploadFileStatus !== 'failed' && uploadFileStatus !== 'complete'} onClick={handleUpload}>Upload File</Button>
+                <Button disabled={uploadFileStatus !== null && uploadFileStatus !== 'failed' && uploadFileStatus !== 'uploaded'} onClick={handleUpload}>Upload File</Button>
                 <Button onClick={clearFile}>Clear Selection</Button>
               </div>
             )}
