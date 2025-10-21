@@ -148,10 +148,9 @@ function ApplicationSupport () {
       alert('Please add prompt');
       return;
     }
-    if (promptContext.trim() === '') {
+    if (promptContext.trim() === '' && contextFiles.length === 0) {
       console.log('Additional Context not provided');
       alert('Please add additional Context');
-      return;
     }
     if (promptModel.trim() === '') return;
     if (promptWithContextJobStatus !== false && promptWithContextJobStatus !== 'complete') {
@@ -270,7 +269,7 @@ function ApplicationSupport () {
             <TextField
               fullWidth
               size="small"
-              placeholder="Describe the Assitance Needed with this job"
+              placeholder="Describe the Assistance Needed with this job"
               value={promptWithContext}
               onChange={e => setPromptWithContext(e.target.value)}
             />

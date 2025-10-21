@@ -262,7 +262,8 @@
             })
               console.log(`upload file  response ${JSON.stringify(response.data)}`)
               actions.uploadFileSuccess(response.data.filename);
-              actions.setFiles((s: any) => [...s, { filename: response.data.filename, key: response.data.strorage_location }]);
+              // values.contextFiles is the current array of files in state; append the new file and pass the full array
+              actions.setFiles([...values.contextFiles, { filename: response.data.filename, key: response.data.strorage_location }]);
           } catch (error) {
             actions.uploadFileFailure(error);
           }
