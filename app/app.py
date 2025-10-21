@@ -253,8 +253,8 @@ def get_context_aided_support():
     try:
         job = task_queue.enqueue(
             'tasks.generate_response',
-            prompt_model,
             prompt_text,
+            prompt_model,
             instructions,
             additional_context,
             files
