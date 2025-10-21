@@ -11,7 +11,7 @@ from flask_socketio import SocketIO
 from app import app
 from src.models.task_model import EmbeddingTask, Index
 from src.models.task_model import IndexTask, PromptTask, db
-from app.src.interfaces.query_prompt import QueryPrompt
+from src.interfaces.query_prompt import QueryPrompt
 from openai import OpenAI
 
 from rq import Queue
