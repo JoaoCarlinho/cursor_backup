@@ -161,7 +161,7 @@ function ApplicationSupport () {
       return;
     }
     addPromptToChatWindow(promptWithContext); 
-    sendPromptWithContext(promptWithContext, promptContext, instructions, promptModel, files);
+    sendPromptWithContext(promptWithContext, promptContext, instructions, promptModel, contextFiles);
     setPromptWithContext('');
   };
 
@@ -213,8 +213,7 @@ function ApplicationSupport () {
             <h1>Upload File to add context</h1>
             <FileUploadInput onFileSelect={setFile} />
             {
-              contextFiles && contextFiles.length > 0 && (
-              ) ? (
+              contextFiles && contextFiles.length > 0 ? (
                 <div>
                   <Typography>Uploaded Files:</Typography>
                   <ul>
