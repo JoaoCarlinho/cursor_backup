@@ -185,7 +185,7 @@ function ApplicationSupport () {
               label="ElasticSearch Vector DBs"
               onChange={handleUseCaseChange}
             >
-              {useCases.map((index: any) => (
+              {useCases && useCases.map((index: any) => (
                 <MenuItem key={index.id} value={index.description}>
                   {index.description}
                 </MenuItem>
@@ -201,7 +201,7 @@ function ApplicationSupport () {
               label="Prompt Model"
               onChange={handlePromptModelChange}
             >
-              {promptModels.map((index: any) => (
+              {promptModels && promptModels.map((index: any) => (
                 <MenuItem key={index} value={index.model}>
                   {index.model}
                 </MenuItem>
@@ -237,7 +237,7 @@ function ApplicationSupport () {
             {!selectedFile && <p>Please select a file to upload.</p>}
           </React.Fragment>
           <Box sx={{ flex: 1, overflowY: 'auto', mb: 1, bgcolor: '#f5f5f5', p: 1, borderRadius: 1 }}>
-            {jobChatHistory.map((msg: ChatMessage, idx: number) => (
+            {jobChatHistory && jobChatHistory.map((msg: ChatMessage, idx: number) => (
               <Box key={idx} sx={{ textAlign: msg.sender === 'user' ? 'right' : 'left', mb: 1 }}>
                 <Typography
                   variant="body2"
